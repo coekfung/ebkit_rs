@@ -1,11 +1,11 @@
-# AGENTS.md — evcam_rs
+# AGENTS.md — ebkit_rs
 
 **Generated:** 2026-02-08 | **Branch:** main (pre-initial-commit)
 
 ## OVERVIEW
 
-Rust workspace for reading, parsing, and converting Prophesee event-camera recordings.
-Edition 2024, stable toolchain. Workspace members match `evcam_*` glob — no source
+Rust workspacebfor reading, parsing, and converting Prophesee event-camera recordings.
+Edition 2024, stable toolchain. Workspace members match `ebkit_*` glob — no source
 code exists yet; the project is greenfield with detailed format specifications in `spec/`.
 
 ## GOALS & NON-GOALS
@@ -24,8 +24,8 @@ code exists yet; the project is greenfield with detailed format specifications i
 ## STRUCTURE
 
 ```
-evcam_rs/
-├── Cargo.toml         # Workspace root: members = ["evcam_*"], resolver = "3"
+ebkit_rs/
+├── Cargo.toml         # Workspace root: members = ["ebkit_*"], resolver = "3"
 ├── Cargo.lock
 ├── spec/              # Format specifications (derived from Prophesee docs + OpenEB)
 │   ├── README.md      # Spec index with format hierarchy diagram
@@ -38,7 +38,7 @@ evcam_rs/
 └── target/            # Build output (gitignored)
 ```
 
-**No `evcam_*` member crates exist yet.** Workspace is scaffolded but source code is TBD.
+**No `ebkit_*` member crates exist yet.** Workspace is scaffolded but source code is TBD.
 
 ## WHERE TO LOOK
 
@@ -87,7 +87,7 @@ evcam_rs/
 [workspace.dependencies]
 anyhow = "1"      # Application error handling (binary crates)
 thiserror = "2"   # Library error types (derive Error)
-winnow = "0.7"    # Parser combinator (RAW header parsing, format field)
+nom = "8"         # Parser combinator (RAW header parsing, format field, streaming support)
 ```
 
 ## CONVENTIONS
@@ -165,9 +165,9 @@ cargo fmt                      # ALWAYS before committing
 
 ## NOTES
 
-- Project is **greenfield** — no source code exists yet. Workspace root is scaffolded with `members = ["evcam_*"]` expecting member crates like `evcam_core`, `evcam_cli`, etc.
+- Project is **greenfield** — no source code exists yet. Workspace root is scaffolded with `members = ["ebkit_*"]` expecting member crates like `ebkit_core`, `ebkit_cli`, etc.
 - The `spec/` directory is the primary design reference. All format specs include pseudocode decoding algorithms and C++ struct references from OpenEB.
-- `winnow` (parser combinator) is pre-selected for RAW header parsing — already in workspace deps.
+- `nom` 8.0 (parser combinator) is pre-selected for RAW header parsing — already in workspace deps. Chosen for its streaming/complete dual-mode parsers, which align with the streaming event decode use case.
 - EVT 3.0 is the most complex format (stateful decoder with 6 state variables) and likely the highest priority since IMX636/GenX320 cameras use it.
 - Seeking in RAW files requires building a timestamp→byte-offset index (similar to `.raw.tmp_index` sidecar in OpenEB). HDF5 has built-in indexes every 2000 µs.
 - ECF compression codec is open-source at [github.com/prophesee-ai/hdf5_ecf](https://github.com/prophesee-ai/hdf5_ecf) — will need Rust implementation or FFI for HDF5 writing.
