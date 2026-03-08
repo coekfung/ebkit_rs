@@ -1,0 +1,13 @@
+[package]
+name = "ebkit_raw"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+ebkit_core = { path = "../ebkit_core" }
+ebkit_macros = { path = "../ebkit_macros" }
+
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+
+winnow = "0.7"
