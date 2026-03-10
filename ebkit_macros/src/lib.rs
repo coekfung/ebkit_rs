@@ -3,8 +3,8 @@ extern crate proc_macro;
 use proc_macro::TokenStream;
 use quote::{format_ident, quote};
 use syn::{
-    parse_macro_input, spanned::Spanned, Attribute, Data, DeriveInput, Fields, Ident, LitInt,
-    LitStr, Type,
+    Attribute, Data, DeriveInput, Fields, Ident, LitInt, LitStr, Type, parse_macro_input,
+    spanned::Spanned,
 };
 
 #[proc_macro_derive(EvtDecode, attributes(evt, field))]
